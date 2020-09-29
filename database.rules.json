@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "roomList": {
+      ".read": true,
+      "$roomId": {
+        ".write": "auth !== null || auth.uid == newData.child('roomCreater/uid').val() || auth.uid == data.child('roomCreater/uid').val()"
+      }
+    },
+    "roomDetail": {
+      "$roomId": {
+        ".read": "auth !== null",
+        ".write": true
+      }
+    },
+    "stories": {
+      "$storyId": {
+        ".read": "auth !== null",
+        ".write": true
+      }
+    },
+    "storyPoints": {
+      "$roomId": {
+        ".read": "auth !== null",
+        ".write": true
+      }
+    },
+    "storyComments": {
+      "$roomId": {
+        ".read": "auth !== null",
+        ".write": true
+      }
+    }
+  }
+}

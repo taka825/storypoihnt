@@ -1,0 +1,71 @@
+{
+  "roomList": {
+    "$roomId": {
+      "roomName": "string",
+      "roomCreator": { "uid": "stinrg" },
+      "joinUsers": {
+        "uid": true
+      },
+      "createTimestamp": "string",
+      "updateTimestamp": "string"
+    }
+  },
+  "roomDetail": {
+    "$roomId": {
+      "roomName": "string",
+      "roomCreator": { "uid": "stinrg" },
+      "stories": { "$storyId": "true" },
+      "createTimestamp": "string",
+      "updateTimestamp": "string"
+    }
+  },
+  "stories": {
+    "roomId": {
+      "$storyId": {
+        "title": "string",
+        "explain": "string",
+        "file": {
+          "path": "string",
+          "name": "string"
+        },
+        "room": {
+          "roomId": "string"
+        },
+        "storyCreator": {
+          "uid": "string"
+        },
+        "createTimestamp": "string",
+        "updateTimestamp": "string"
+      }
+    }
+  },
+  "storyPoints": {
+    "roomId": {
+      "$storyId": {
+        "uid": {
+          "user": {
+            "diplayName": "string",
+            "photoURL": "string"
+          },
+          "point": 0
+        }
+      }
+    }
+  },
+  "storyComments": {
+    "roomId": {
+      "$storyId": {
+        "$messageId": {
+          "comment": "string",
+          "user": {
+            "uid": "string",
+            "displayName": "string",
+            "photoUrl": "string"
+          },
+          "createTimestamp": "string",
+          "updateTimestamp": "string"
+        }
+      }
+    }
+  }
+}
