@@ -18,3 +18,10 @@ export const putSotryFile = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getIconFileURL = (fileName: string): Promise<any> =>
   storage.ref(iconFilePath).child(fileName).getDownloadURL();
+
+export const getStoryFileURL = (
+  storyId: string,
+  fileName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> =>
+  storage.ref(storyFilePath).child(storyId).child(fileName).getDownloadURL();

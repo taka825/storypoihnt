@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface StoriesState {
   currentStoryId: string | null;
@@ -22,6 +22,12 @@ export interface Story {
 
 export interface SetCurrentStoryIdAction {
   storyId: string;
+}
+
+export interface FetchStoryFileAction {
+  storyId: string;
+  fileName: string;
+  callback: (url: string) => void;
 }
 
 const initialState: StoriesState = {
@@ -53,6 +59,10 @@ const storiesSlice = createSlice({
   },
 });
 
+export const fetchStoryFile = createAction(
+  `${storiesSlice.name}/fetchStoryFile`,
+  (action: FetchStoryFileAction) => ({ payload: action }),
+);
 export const { setCuurentStoryId, setStories } = storiesSlice.actions;
 
 export default storiesSlice.reducer;

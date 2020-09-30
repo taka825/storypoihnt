@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { RootState } from 'redux/rootReducer';
+import { fetchStoryFile } from 'common/firebase/redux/storiesSlice';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -23,6 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Story: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [fileURL, setFileURL] = useState<string>('');
 
   const currentStoryId = useSelector((state: RootState) =>
     _.get(state, 'stories.currentStoryId'),
@@ -35,6 +38,20 @@ const Story: React.FC = () => {
     if (storyArray) return storyArray[1];
     return null;
   });
+
+  useEffect(() => {
+    console.log(story, fileURL);
+    if (!story?.file) return;
+    dispatch(
+      fetchStoryFile({
+        storyId: currentStoryId,
+        fileName: story.file.name,
+        callback: (url) => {
+          setFileURL(url);
+        },
+      }),
+    );
+  }, [dispatch, currentStoryId, story]);
 
   if (!story) return null;
 
@@ -49,17 +66,17 @@ const Story: React.FC = () => {
         <AccordionDetails>
           <Typography className={classes.explain}>{story.explain}</Typography>
         </AccordionDetails>
-        {story.file ? <Divider /> : null}
+        {fileURL !== '' ? <Divider /> : null}
         <AccordionActions>
           {
             // <Button size="small" color="primary">
             //   編集
             // </Button>
           }
-          {story.file ? (
+          {fileURL !== '' ? (
             <Button
               component="a"
-              href="https://firebasestorage.googleapis.com/v0/b/storypoint-30de8.appspot.com/o/stories%2F115ebef8-4a45-453f-8fa8-463b795a4ee3%2Fpngtest.png?alt=media&token=0b0f80c6-ad3b-453b-8db9-a44b37c4036f"
+              href={fileURL}
               target="_blank"
               size="small"
               color="primary">

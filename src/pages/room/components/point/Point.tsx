@@ -34,7 +34,7 @@ const Point: React.FC<Props> = ({ point, onClick, className }) => {
 
   const handlePointClick = useCallback(() => {
     if (onClick) onClick(point);
-  }, [onClick]);
+  }, [onClick, point]);
 
   return (
     <Button

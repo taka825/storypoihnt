@@ -3,14 +3,18 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { setStory } from 'common/firebase/network/room';
-import { putSotryFile } from 'common/firebase/network/storage';
+import { getStoryFileURL, putSotryFile } from 'common/firebase/network/storage';
 import {
   CreateStoryAction,
   createStory,
   createStorySuccess,
   createStoryFailure,
 } from 'common/firebase/redux/createStorySlice';
-import { Story } from 'common/firebase/redux/storiesSlice';
+import {
+  fetchStoryFile,
+  FetchStoryFileAction,
+  Story,
+} from 'common/firebase/redux/storiesSlice';
 import { hideModal } from 'common/modal/redux/rootModalSlice';
 
 function* storyCreater(action: PayloadAction<CreateStoryAction>) {
@@ -69,7 +73,23 @@ function* storyCreater(action: PayloadAction<CreateStoryAction>) {
   }
 }
 
+function* storyFileFetcher(action: PayloadAction<FetchStoryFileAction>) {
+  try {
+    const url = yield call(
+      { context: undefined, fn: getStoryFileURL },
+      action.payload.storyId,
+      action.payload.fileName,
+    );
+    if (_.isFunction(action.payload.callback)) {
+      action.payload.callback(url);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function* storyWatcher() {
   yield takeLatest(createStory, storyCreater);
+  yield takeLatest(fetchStoryFile, storyFileFetcher);
 }
